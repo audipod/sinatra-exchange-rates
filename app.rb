@@ -39,9 +39,9 @@ raw_data_string = raw_data.to_s
 
 @parsed_data = JSON.parse(raw_data_string)
 
-@symbol = @parsed_data["query"]
+@symbols = @parsed_data["currencies"]
 
-  erb(:currency_conversion)
+erb(:currency_conversion)
 
 
 end
@@ -53,9 +53,13 @@ get("/:from_currency/:to_currency") do
   api_url = "https://api.exchangerate.host/convert?access_key=#{ENV["SECRET"]}&from=#{@original_currency}&to=#{@destination_currency}&amount=1"
   
   raw_data = HTTP.get(api_url)
+
   raw_data_string = raw_data.to_s
-  parsed_data = JSON.parse(raw_data_string)
-  
-  erb(:currency_conversion)
+
+  @parsed_data = JSON.parse(raw_data_string)
+
+  @new_symbols = @parsed_data["query"]
+
+  erb(:currency_conversion_result)
 
 end
